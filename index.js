@@ -38,7 +38,7 @@ app.post("/api/fromFahrheitToCelsius", (req, res) => {
 
 // Setup a default catch-all route
 app.use((req, res) => {
-	res.status(200).send({
+	res.status(404).send({
 		message: "A wrong link was entered"
 	});
 });
