@@ -62,6 +62,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Read Docker Image Identifiers
+        run: echo ::set-env name=IMAGE_REPOSITORY::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
+
       - name: Build and push Docker
         uses: docker/build-push-action@v6
         with:
@@ -70,6 +73,6 @@ jobs:
           push: true
           pull: true
           platforms: linux/amd64
-          tags: ghcr.io/${{ toLower(github.repository) }}:latest
-          cache-from: type=registry,ref=ghcr.io/${{ toLower(github.repository) }}:latest
+          tags: ghcr.io/${{ env.IMAGE_REPOSITORY }}:latest
+          cache-from: type=registry,ref=ghcr.io/${{ env.IMAGE_REPOSITORY }}:latest
           cache-to: type=inline
