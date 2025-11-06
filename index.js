@@ -1,55 +1,58 @@
-const path = require("node:path");
-const process = require("node:process");
-const bodyParser = require("body-parser");
-const express = require("express");
-const auxiliaryAPI = require("./public/js/auxiliaryAPI.js");
+const path = require("node:path")
+const process = require("node:process")
+const bodyParser = require("body-parser")
+const express = require("express")
+const auxiliaryAPI = require("./public/js/auxiliaryAPI.js")
 
-const { json } = bodyParser;
-const port = process.env.PORT || 8080;
+const { json } = bodyParser
+const port = process.env.PORT || 8080
 
 // initialize
-const app = express();
+const app = express()
 
 // Parse incoming requests data (https://github.com/expressjs/body-parser)
-app.use(json());
-app.use("/public", express.static(path.join(__dirname, "public")));
+app.use(json())
+app.use("/public", express.static(path.join(__dirname, "public")))
 
 // homepage for calculator
 app.get("/", (req, res) => {
-	res.sendFile("index.html", { root: __dirname });
-});
+	res.sendFile("index.html", { root: __dirname })
+})
 
 // calculation via Rest API
 app.post("/api/fromCelsiusToFahrenheit", (req, res) => {
-	const { temperature } = req.body;
-	const result = auxiliaryAPI.celsiusToFahrenheit(temperature);
+	const { temperature } = req.body
+	const result = auxiliaryAPI.celsiusToFahrenheit(temperature)
 	return res.status(200).send({
-		result
-	});
-});
+		result,
+	})
+})
 
 app.post("/api/fromFahrheitToCelsius", (req, res) => {
-	const { temperature } = req.body;
-	const result = auxiliaryAPI.fahrenheitToCelcius(temperature);
+	const { temperature } = req.body
+	const result = auxiliaryAPI.fahrenheitToCelcius(temperature)
 	return res.status(200).send({
-		result
-	});
-});
+		result,
+	})
+})
 
 // Setup a default catch-all route
 app.use((req, res) => {
 	res.status(404).send({
-		message: "A wrong link was entered"
-	});
-});
+		message: "A wrong link was entered",
+	})
+})
 
 // start app on node server
 app.listen(port, (err) => {
 	if (!err) {
-		console.log(`App started on port ${port}`);
-	} else {
-		console.log(err);
+		// eslint-disable-next-line no-console
+		console.log(`App started on port ${port}`)
 	}
-});
+	else {
+		// eslint-disable-next-line no-console
+		console.log(err)
+	}
+})
 
-module.exports = app;
+module.exports = app
